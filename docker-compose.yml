@@ -1,0 +1,15 @@
+version: '3.6'
+services:
+    app:
+        build: 
+            context: .
+            dockerfile: Dockerfile
+        entrypoint: /entrypoint.sh
+        working_dir: /app
+        container_name: flask_app
+        command: 'python3 main.py runserver --host 0.0.0.0' 
+        volumes:
+        - ./app:/app
+        - ./entrypoints/freeze.sh:/entrypoint.sh
+        ports:
+        - "5000:5000"
