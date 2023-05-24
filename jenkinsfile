@@ -4,26 +4,27 @@ pipeline {
 
     stages {
 
-        steps('Build Flask app') {
-
-            echo '-----START BUILD APP-----'
-            sh """
-            cd $FLASK_APP_DIR
-            docker build -t $FLASKAPP_DOCKER_TAG .
-            """
-            echo '-----START BUILD APP-----'
-
+        stage('Build Flask app') {
+            steps{
+                echo '-----START BUILD APP-----'
+                sh """
+                cd $FLASK_APP_DIR
+                docker build -t $FLASKAPP_DOCKER_TAG .
+                """
+                echo '-----START BUILD APP-----'
+            }
         }
-        steps('Docker login') {
-
-            sh """ 
-            docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWD
-            """
-
+        stage('Docker login') {
+            steps {
+                sh """ 
+                docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWD
+                """
+            }
         }
-        steps('Docker push to registry') {
-
-            sh 'docker push $FLASKAPP_DOCKER_TAG'
+        stage('Docker push to registry') {
+            steps {
+                sh 'docker push $FLASKAPP_DOCKER_TAG'
+            }
 
         }
 
