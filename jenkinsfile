@@ -1,0 +1,31 @@
+pipeline {
+
+    agent any
+
+    stages {
+
+        stage('Build Flask app') {
+
+            echo '-----START BUILD APP-----'
+            sh """
+            cd $FLASK_APP_DIR
+            docker build -t $FLASKAPP_DOCKER_TAG .
+            """
+            echo '-----START BUILD APP-----'
+
+        }
+        stage('Docker login') {
+
+            sh """ 
+            docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWD
+            """
+
+        }
+        stage('Docker push to registry') {
+
+            sh 'docker push $FLASKAPP_DOCKER_TAG'
+
+        }
+
+    }
+}
