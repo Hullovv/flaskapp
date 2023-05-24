@@ -4,7 +4,7 @@ pipeline {
 
     stages {
 
-        stage('Build Flask app') {
+        steps('Build Flask app') {
 
             echo '-----START BUILD APP-----'
             sh """
@@ -14,14 +14,14 @@ pipeline {
             echo '-----START BUILD APP-----'
 
         }
-        stage('Docker login') {
+        steps('Docker login') {
 
             sh """ 
             docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWD
             """
 
         }
-        stage('Docker push to registry') {
+        steps('Docker push to registry') {
 
             sh 'docker push $FLASKAPP_DOCKER_TAG'
 
