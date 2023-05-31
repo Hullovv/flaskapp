@@ -4,12 +4,38 @@ services:
         build: 
             context: .
             dockerfile: Dockerfile
+        env_file:
+            - .env
         entrypoint: /entrypoint.sh
         working_dir: /app
         container_name: flask_app
-        command: 'python3 main.py runserver --host 0.0.0.0' 
+        command: 'python3 main.py runserver --host 0.0.0.0 -d -r' 
+        depends_on:
+            - db
         volumes:
         - ./app:/app
         - ./entrypoints/freeze.sh:/entrypoint.sh
         ports:
         - "5000:5000"
+
+    db:
+        image: jamielsharief/mysql:latest
+        container_name: mysql_flaskapp
+        env_file:
+        - .env
+        environment:
+         MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWD}"
+         MYSQL_DATABASE: "${DATABASE}"
+         MYSQL_USER: "${MYSQL_USER}"
+         MYSQL_PASSWORD: "${MYSQL_USER_PASSWD}"
+        volumes:
+        - ./mysql/db:/var/lib/mysql
+        - ./entrypoints/adduser.sql:/docker-entrypoint-initdb.d/adduser.sql
+        ports:
+        - "3307:3306"
+
+    redis:
+        image: redis
+
+    nginx:
+        image: nginx
