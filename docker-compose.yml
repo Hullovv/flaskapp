@@ -9,7 +9,7 @@ services:
         entrypoint: /entrypoint.sh
         working_dir: /app
         container_name: flask_app
-        command: 'python3 main.py runserver --host 0.0.0.0 -d -r' 
+        command: 'python3 app.py runserver --host 0.0.0.0 -d -r' 
         depends_on:
             - db
         volumes:
@@ -17,6 +17,7 @@ services:
         - ./entrypoints/freeze.sh:/entrypoint.sh
         ports:
         - "5000:5000"
+        restart: always
 
     db:
         image: jamielsharief/mysql:latest

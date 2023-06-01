@@ -1,5 +1,6 @@
 from flask import render_template
 from app import app
+from lib.form_classes import *
 
 @app.route('/', methods=['GET'])
 def show_index():
@@ -11,7 +12,9 @@ def login():
 
 @app.route('/registration', methods=['GET', 'POST'])
 def registration():
-    pass
+    form = RegistrationForm()
+
+    return render_template('registration.html', form=form)
 
 @app.errorhandler(404)
 def page_not_found(err):

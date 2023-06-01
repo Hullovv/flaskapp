@@ -1,29 +1,41 @@
 from mysql.connector import connect, Error 
-from sqlalchemy import create_engine
-from sqlalchemy.types import String, Date, Integer, Float
+from sqlalchemy import create_engine, Column, Table, MetaData, insert, select
+from sqlalchemy.types import String, Date, Integer, Float, Boolean
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import Mapped
-# from sqlalchemy.orm import mapped_column
+import sqlalchemy as sql
 import os
+from datetime import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin, LoginManager
 
-db = os.getenv('DATABASE')
-host = os.getenv('DB_HOST')
-user = os.getenv('MYSQL_USER')
-password = os.getenv('MYSQL_USER_PASSWD')
-driver = 'mysql+mysqlconnector'
+from app import db, login_manager
 
-engine = create_engine(f"{driver}://{user}:{password}@{host}:3306/{db}")
+class User(db.Model, UserMixin):
+    __tablename__ = 'user'
+    id = db.Column(Integer, primary_key=True, autoincrement=True)
+    name = db.Column(String(100), nullable=False)
+    username = db.Column(String(100), nullable=False)
+    email = db.Column(String(255), unique=True, nullable=False)
+    password = db.Column(String(255), nullable=False) 
+    created_at = db.Column(Date, nullable=False, default=datetime.now())
 
-try:
-    engine.connect()
-    print('connect')
-except Exception as err:
-    print(err)
+    def __repr__(self):
+        return '<User {}>'.format(self.username)
 
-class User:
-    pass
-    # __tablename__ = os.getenv('USER_TABLE')
-    # user_id = 
-    # name: 
-    # username:
-    # email: Mapped[str]
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
+    
+def create_user(name, username, email, password):
+
+    new_user = User(
+        name = name,
+        username = username,
+        email = email,
+        password = generate_password_hash(password)
+    )
+
+    db.session.add(new_user)
+    db.session.commit()
+
+db.create_all()

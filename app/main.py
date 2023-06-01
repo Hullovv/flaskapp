@@ -15,7 +15,7 @@ class NameForm(FlaskForm):
 
 app = Flask(__name__)
 
-app.config['SECRET_KEY'] = '123123'
+app.config['SECRET_KEY'] = 'GEB1cfikudpLM'
 
 manager = Manager(app)
 bootstrap = Bootstrap(app)
