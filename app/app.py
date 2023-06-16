@@ -41,8 +41,8 @@ migrate.init_app(app, db)
 @app.route('/', methods=['GET'])
 def index():
     if current_user.is_authenticated:
-        return current_user.name
-    return 'hello'
+        return render_template('index.html', name=current_user.name) 
+    return render_template('index.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
