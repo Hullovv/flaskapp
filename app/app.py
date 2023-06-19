@@ -65,10 +65,21 @@ def registration():
     if form.validate_on_submit():
         name = form.name.data
         username = form.surname.data
-        email = form.email.data
+        try:
+            email = form.email.data
+        except:
+            flash('email zanyat')
         password = form.password.data
         create_user(name=name, username=username, email=email, password=password)
     return render_template('registration.html', form=form)
+
+
+@app.route('/user/<id>')
+def show_user(id):
+    user = User.query.filter_by(id=id).first()
+    if user == None:
+        return {'message': 'user not found'}
+    return render_template('show_user.html', user=user)
 
 @app.errorhandler(404)
 def page_not_found(err):

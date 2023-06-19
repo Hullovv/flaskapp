@@ -8,16 +8,12 @@ class RegistrationForm(FlaskForm):
     email = StringField('Почта: ', validators=[DataRequired(), Email()])
     password = PasswordField('Пароль: ', validators=[DataRequired()])
     confirm_password = PasswordField('Подтвердите пароль: ', validators=[DataRequired(), EqualTo('password')])
-    reg_submit = SubmitField('Заругестрироваться')
+    reg_submit = SubmitField('Зарегистрироваться')
 
 class LoginForm(FlaskForm):
     email = StringField('Почта: ', validators=[DataRequired()])
     password = PasswordField('Пароль: ', validators=[DataRequired()])
     log_submit = SubmitField('Войти')
-
-class UploadMusic(FlaskForm):
-    music_field = FileField('Выбрать файл')
-    mus_submit = SubmitField('Загрузить')
 
 class SetNewPasswd(FlaskForm):
     pass
