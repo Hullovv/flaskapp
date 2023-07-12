@@ -37,6 +37,6 @@ def create_user(name, username, email, password):
 
     db.session.add(new_user)
     db.session.commit()
-    db.session.close()
+    
 
 db.create_all()
