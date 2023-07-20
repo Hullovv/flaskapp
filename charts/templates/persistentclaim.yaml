@@ -3,9 +3,9 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{ .Release.Name }}-mysql-pv-claim
 spec:
-  storageClassName: {{ .Values.storageclass.name | default "manual" }}
+  storageClassName: {{ .Values.storageclass | default "manual" }}
   accessModes:
-    - {{ .Values.pvc.accmode | default "ReadWriteOnce" }}
+    - {{ .Values.pvc | default "ReadWriteOnce" }}
   resources:
     requests:
-      storage: {{ .Values.pvc.storage | default "2Gi" }} 
+      storage: {{ .Values.pvc | default "2Gi" }} 

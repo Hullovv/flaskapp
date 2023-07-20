@@ -3,30 +3,30 @@ kind: Deployment
 metadata:
   name: {{ .Release.Name }}-mysql-deploy
   labels:
-    app: {{ .Values.mysql.label | default "mysql" }}
+    app: {{ .Values.mysql | default "mysql" }}
 spec:
-  replicas: {{ .Values.mysql.repl | default 1 }}
+  replicas: {{ .Values.mysql | default 1 }}
   selector:
     matchLabels:
-      app: {{ .Values.mysql.label | default "mysql" }}
+      app: {{ .Values.mysql | default "mysql" }}
   template:
     metadata:
       labels:
-        app: {{ .Values.mysql.label | default "mysql" }}
+        app: {{ .Values.mysql | default "mysql" }}
     spec:
       containers:
-      - image: {{ .Values.mysql.image | default "jamielsharief/mysql:latest" }} 
-        name: {{ .Values.mysql.name | default "mysql" }}      
+      - image: {{ .Values.mysql | default "jamielsharief/mysql:latest" }} 
+        name: {{ .Values.mysql | default "mysql" }}      
         ports:
-        - containerPort: {{ .Values.mysql.port | default 3306 }}
+        - containerPort: {{ .Values.mysql | default 3306 }}
         envFrom:
         - secretRef:
-          name: {{ .Values.secret.name }}
+          name: {{ .Values.secret }}
         volumeMounts:
-            - name: {{ .Values.pv.name | default "mysql-persistent-storage" }}
-              mountPath: {{ .Values.mysql.mountpath | default "/var/lib/mysql" }} 
+            - name: {{ .Values.pv | default "mysql-persistent-storage" }}
+              mountPath: {{ .Values.mysql | default "/var/lib/mysql" }} 
       
       volumes:
-        - name: {{ .Values.pv.name | default "mysql-persistent-storage" }}
+        - name: {{ .Values.pv | default "mysql-persistent-storage" }}
           persistentVolumeClaim:
-            claimName: {{ .Values.pvc.name | default "mysql-pv-claim" }} 
+            claimName: {{ .Values.pvc | default "mysql-pv-claim" }} 

@@ -3,13 +3,13 @@ kind: PersistentVolume
 metadata:
   name: {{ .Release.Name }}-mysql-pv-volume
   labels:
-    type: {{ .Values.pv.label.type | default "local" }}
+    type: {{ .Values.pv | default "local" }}
 spec:
-  storageClassName: {{ .Values.storageclass.name | default "manual" }}
+  storageClassName: {{ .Values.storageclass | default "manual" }}
   capacity:
-    storage: {{ .Values.pv.storage | default "2Gi" }} 
+    storage: {{ .Values.pv | default "2Gi" }} 
   accessModes:
-    - {{ .Values.pv.accmode | default "ReadWriteOnce" }}
-  persistentVolumeReclaimPolicy: {{ .Values.pv.reclaimpolicy | default "Retain" }} 
+    - {{ .Values.pv | default "ReadWriteOnce" }}
+  persistentVolumeReclaimPolicy: {{ .Values.pv | default "Retain" }} 
   hostPath:
-    path: {{ .Values.pv.path | default "/mnt/data" }} 
+    path: {{ .Values.pv | default "/mnt/data" }} 

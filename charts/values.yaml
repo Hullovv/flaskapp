@@ -6,3 +6,10 @@ flaskservice:
     app: flask
 
 flaskapp:
+  test: 1
+secrets:
+  data:
+    MYSQL_PASSWORD: flask
+    MYTEST: test
+
+storageclass:

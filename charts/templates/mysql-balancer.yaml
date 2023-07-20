@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.mysqlservice.name | default "mysql" }}  
+  name: {{ .Values.mysqlservice | default "mysql" }}  
   labels:
-    app: {{ .Values.mysqlservice.label | default "mysql" }}  
+    app: {{ .Values.mysqlservice | default "mysql" }}  
 spec:
   ports:
-  - port: {{ .Values.mysqlservice.port | default 3306 }}
+  - port: {{ .Values.mysqlservice | default 3306 }}
     protocol: TCP
-    name: {{ .Values.mysqlservice.portname | default "mysql" }}  
+    name: {{ .Values.mysqlservice | default "mysql" }}  
   selector:
-    app: {{ .Values.mysqlservice.selector | default "mysql" }}  
-  type: {{ .Values.mysqlservice.type | default "LoadBalancer" }} 
+    app: {{ .Values.mysqlservice | default "mysql" }}  
+  type: {{ .Values.mysqlservice | default "LoadBalancer" }} 
