@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-flak-deploy
+  labels:
+    app: {{ .Values.flaskapp.label | default "flaskapp" }}
+spec:
+  replicas: {{ .Values.flaskapp.repl | default 1 }}
+  selector:
+    matchLabels:
+      app: {{ .Values.flaskapp.label | default "flaskapp" }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.flaskapp.label | default "flaskapp" }}
+    spec:
+      containers:
+        - image: {{ .Values.flaskapp.image | default "ababa777/flaskapp:latest" }}
+          name: {{ .Values.flaskapp.name | default "flaskapp" }}
+          command: ["python3"]
+          args: ["app.py", "runserver", "--host", "0.0.0.0", "-d", "-r"]
+          ports:
+            - containerPort: {{ .Values.flaskapp.port | default 5000 }}
+          envFrom:
+          - secretRef:
+            name: {{ .Values.secret.name }}

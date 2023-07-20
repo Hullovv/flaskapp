@@ -1,0 +1,8 @@
+flaskservice:
+  name: flask
+  port: 80
+  targetport: 8080
+  selector:
+    app: flask
+
+flaskapp:

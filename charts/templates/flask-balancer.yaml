@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}- {{- .Values.flaskservice.name | default flask -}}
+spec:
+  ports:
+  - port: {{ .Values.flaskservice.port | default 5000 }}
+    protocol: TCP
+    targetPort: {{ .Values.flaskservice.tport | default 5000 }}
+  selector:
+    app: {{ .Values.flaskservice.selector | default flaskapp }}
+  type: {{ .Values.flaskservice.type | default LoadBalancer }}
