@@ -1,4 +1,4 @@
-FROM python:3.6
+FROM python:3.8
 WORKDIR /app
 RUN apt update && \
     apt install python3-pip -y

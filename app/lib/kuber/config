@@ -1,0 +1,44 @@
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: DATA+OMITTED
+    server: https://192.168.0.16:6443
+  name: kubernetes
+- cluster:
+    certificate-authority: /home/alex/.minikube/ca.crt
+    extensions:
+    - extension:
+        last-update: Tue, 18 Jul 2023 22:08:27 MSK
+        provider: minikube.sigs.k8s.io
+        version: v1.30.1
+      name: cluster_info
+    server: https://192.168.49.2:8443
+  name: minikube
+contexts:
+- context:
+    cluster: kubernetes
+    user: kubernetes-admin
+  name: kubernetes-admin@kubernetes
+- context:
+    cluster: minikube
+    extensions:
+    - extension:
+        last-update: Tue, 18 Jul 2023 22:08:27 MSK
+        provider: minikube.sigs.k8s.io
+        version: v1.30.1
+      name: context_info
+    namespace: default
+    user: minikube
+  name: minikube
+current-context: minikube
+kind: Config
+preferences: {}
+users:
+- name: kubernetes-admin
+  user:
+    client-certificate-data: DATA+OMITTED
+    client-key-data: DATA+OMITTED
+- name: minikube
+  user:
+    client-certificate: /home/alex/.minikube/profiles/minikube/client.crt
+    client-key: /home/alex/.minikube/profiles/minikube/client.key
