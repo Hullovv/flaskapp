@@ -19,13 +19,14 @@ if __name__ != 'app':
 app = Flask(__name__)
 
 db_nm = os.getenv('DATABASE')
-db_host = os.getenv('DB_HOST')
+db_host = os.getenv('MYSQL_SERVICE_HOST')
+db_port = os.getenv('MYSQL_SERVICE_PORT')
 db_user = os.getenv('MYSQL_USER')
 db_password = os.getenv('MYSQL_USER_PASSWD')
 driver = 'mysql+mysqlconnector'
 
 app.config['SECRET_KEY'] = '123123'
-app.config['SQLALCHEMY_DATABASE_URI'] = f"{driver}://{db_user}:{db_password}@{db_host}:3306/flask_app"
+app.config['SQLALCHEMY_DATABASE_URI'] = f"{driver}://{db_user}:{db_password}@{db_host}:{db_port}/{db_nm}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 manager = Manager(app)
