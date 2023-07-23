@@ -1,0 +1,71 @@
+secrets:
+  name: flask-secrets
+  type: Opaque
+  data:
+    MYSQL_PASSWORD: flask
+    MYTEST: test
+
+modes:
+  rwo: ReadWriteOnce
+
+storageclass:
+  name: manual
+
+pvc:
+  name: mysql-pv-claim
+  storage: 2Gi
+
+pv:
+  name: mysql-pv-volume
+  storage: 2Gi
+  reclaimpolicy: Retain
+  path: /mnt/data
+  labels:
+    type: local
+
+flaskapp:
+  name: flaskapp
+  image: ababa777/flaskapp:latest
+  replicas: 1
+  
+  ServiceName: flask
+  ServicePort: 80
+  ServiceTarget: 8080
+  ServiceType: LoadBalancer
+  ServiceSelector: 
+    app: flask
+  
+  DeployName: flask-deploy
+  DeployPort: 5000
+  DeployLabels:
+    app: flaskapp
+  DeploySelector:
+    app: flaskapp
+  DeployTempLabels:
+    app: flaskapp
+
+mysql:
+  name: mysql
+  replicas: 1
+  image: jamielsharief/mysql:latest
+  path: /var/lib/mysql
+
+  VolumeName: mysql-persistent-storage
+
+  ServiceName: mysql
+  ServiceLabels:
+    app: mysql
+  ServicePort: 3306
+  ServicePortName: mysql
+  ServiceType: LoadBalancer
+  ServiceSelector: 
+    app: mysql
+
+  DeployName: mysql-deploy
+  DeployPort: 3306
+  DeployLabels:
+    app: mysql
+  DeploySelector:
+    app: mysql
+  DeployTempLabels:
+    app: mysql

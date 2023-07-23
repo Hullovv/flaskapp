@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "MysqlServiceName" . }}
+  labels:
+  {{- range $key, $value := .Values.mysql.ServiceLabels }}
+    {{ $key }}: {{ $value }}
+  {{- end }}  
+spec:
+  ports:
+  - port: {{ .Values.mysql.ServicePort }}
+    protocol: TCP
+    name: {{ .Values.mysql.ServicePortName }}  
+  selector:
+  {{- range $key, $value := .Values.mysql.ServiceSelector }}
+    {{ $key }}: {{ $value }}
+  {{- end }} 
+  type: {{ .Values.mysql.ServiceType }} 

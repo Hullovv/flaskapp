@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "FlaskServiceName" . }}
+spec:
+  type: {{ .Values.flaskapp.ServiceType | default "LoadBalancer" }}
+  ports:
+  - port: {{ .Values.flaskapp.ServicePort | default 5000 }}
+    protocol: TCP
+    targetPort: {{ .Values.flaskapp.ServiceTarget | default 5000 }}
+  selector: 
+    {{- range $key, $value := .Values.flaskapp.ServiceSelector }}
+      {{ $key }}: {{ $value }}
+    {{- end }}

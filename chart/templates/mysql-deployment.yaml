@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "MysqlDeploymentName" . }}
+  labels:
+  {{- range $key, $value := .Values.mysql.DeployLabels }}
+    {{ $key }}: {{ $value }}
+  {{- end }}
+spec:
+  replicas: {{ .Values.mysql.replicas | default 1 | int }}
+  selector:
+    matchLabels:
+    {{- range $key, $value := .Values.mysql.DeploySelector }}
+      {{ $key }}: {{ $value }}
+    {{- end }}
+  template:
+    metadata:
+      labels:
+      {{- range $key, $value := .Values.mysql.DeployTempLabels  }}
+        {{ $key }}: {{ $value }}
+      {{- end }}
+    spec:
+      containers:
+      - image: {{ .Values.mysql.image }} 
+        name: {{ .Values.mysql.name }}      
+        ports:
+        - containerPort: {{ .Values.mysql.DeployPort }}
+        envFrom:
+          - secretRef:
+              name: {{ include "SecretsName" . }}
+        volumeMounts:
+        - name: {{ include "MysqlVolumeName" . }}
+          mountPath: {{ .Values.mysql.path }}
+      volumes:
+        - name: {{ include "MysqlVolumeName" . }}
+          persistentVolumeClaim:
+            claimName: {{ include "PvcName" . }} 
