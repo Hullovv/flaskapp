@@ -25,9 +25,30 @@ spec:
         name: {{ .Values.mysql.name }}      
         ports:
         - containerPort: {{ .Values.mysql.DeployPort }}
-        envFrom:
-          - secretRef:
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
               name: {{ include "SecretsName" . }}
+              key: MYSQL_ROOT_PASSWORD
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "SecretsName" . }}
+              key: MYSQL_USER
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "SecretsName" . }}
+              key: MYSQL_PASSWORD
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "SecretsName" . }}
+              key: MYSQL_DATABASE
+        # envFrom:
+        #   - secretRef:
+        #       name: {{ include "SecretsName" . }}
         volumeMounts:
         - name: {{ include "MysqlVolumeName" . }}
           mountPath: {{ .Values.mysql.path }}

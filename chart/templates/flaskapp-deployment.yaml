@@ -7,7 +7,7 @@ metadata:
     {{ $key }}: {{ $value }}
   {{- end }}
 spec:
-  replicas: {{ .Values.flaskapp | default 1 | int }}
+  replicas: {{ .Values.flaskapp.replicas | default 1 | int }}
   selector:
     matchLabels:
     {{- range $key, $value := .Values.flaskapp.DeploySelector }}
@@ -23,8 +23,8 @@ spec:
       containers:
         - image: {{ .Values.flaskapp.image }}
           name: {{ .Values.flaskapp.name }}
-          command: ["python3"]
-          args: ["app.py", "runserver", "--host", "0.0.0.0", "-d", "-r"]
+          command: ["sleep", "999999999999999999999"]
+          # args: ["app.py", "runserver", "--host", "0.0.0.0", "-d", "-r"]
           ports:
           - containerPort: {{ .Values.flaskapp.DeployPort }}
           envFrom:
